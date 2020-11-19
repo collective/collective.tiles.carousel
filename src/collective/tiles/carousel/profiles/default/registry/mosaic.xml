@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <registry
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    i18n:domain="collective.tiles.bootstrapslider">
+    i18n:domain="collective.tiles.carousel">
 
 <!-- -*- extra stuff goes here -*- -->
 
@@ -30,15 +30,15 @@
   <!-- Slider tile -->
   <record name="plone.app.tiles">
     <value purge="false">
-      <element>collective.tiles.bootstrapslider</element>
+      <element>collective.tiles.carousel</element>
     </value>
   </record>
 
 
-  <records prefix="plone.app.mosaic.app_tiles.collective_tiles_bootstrapslider"
+  <records prefix="plone.app.mosaic.app_tiles.collective_tiles_carousel"
       interface="plone.app.mosaic.interfaces.ITile">
-    <value key="name">collective.tiles.bootstrapslider</value>
-    <value key="label">Bootstrapslider</value>
+    <value key="name">collective.tiles.carousel</value>
+    <value key="label">Carousel</value>
     <value key="category">media</value>
     <value key="tile_type">app</value>
     <value key="default_value"></value>

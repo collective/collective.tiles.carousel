@@ -7,7 +7,7 @@ class HiddenProfiles:
     def getNonInstallableProfiles(self):
         """Hide uninstall profile from site-creation and quickinstaller."""
         return [
-            "collective.tiles.bootstrapslider:uninstall",
+            "collective.tiles.carousel:uninstall",
         ]
 
 

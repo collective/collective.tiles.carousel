@@ -1,5 +1,5 @@
 ================================
-collective.tiles.bootstrapslider
+collective.tiles.carousel
 ================================
 
 User documentation

@@ -1,4 +1,4 @@
-collective.tiles.bootstrapslider Copyright 2020, Peter Holzer
+collective.tiles.carousel Copyright 2020, Peter Holzer
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License version 2

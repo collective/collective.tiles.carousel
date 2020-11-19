@@ -4,17 +4,17 @@
 #
 # Run this robot test stand-alone:
 #
-#  $ bin/test -s collective.tiles.bootstrapslider -t test_example.robot --all
+#  $ bin/test -s collective.tiles.carousel -t test_example.robot --all
 #
 # Run this robot test with robot server (which is faster):
 #
 # 1) Start robot server:
 #
-# $ bin/robot-server --reload-path src collective.tiles.bootstrapslider.testing.COLLECTIVE_TILES_BOOTSTRAPSLIDER_ACCEPTANCE_TESTING
+# $ bin/robot-server --reload-path src collective.tiles.carousel.testing.COLLECTIVE_TILES_CAROUSEL_ACCEPTANCE_TESTING
 #
 # 2) Run robot tests:
 #
-# $ bin/robot src/collective/tiles/bootstrapslider/tests/robot/test_example.robot
+# $ bin/robot src/collective/tiles/carousel/tests/robot/test_example.robot
 #
 # See the http://docs.plone.org for further details (search for robot
 # framework).

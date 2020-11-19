@@ -1,4 +1,4 @@
-"""Installer for the collective.tiles.bootstrapslider package."""
+"""Installer for the collective.tiles.carousel package."""
 
 from setuptools import find_packages
 from setuptools import setup
@@ -14,7 +14,7 @@ long_description = "\n\n".join(
 
 
 setup(
-    name="collective.tiles.bootstrapslider",
+    name="collective.tiles.carousel",
     version="1.0a1",
     description="Slider for plone.app.mosaic based on Bootstrap 5",
     long_description=long_description,
@@ -32,12 +32,12 @@ setup(
     keywords="Python Plone CMS",
     author="Peter Holzer",
     author_email="peter.holzer@agitator.com",
-    url="https://github.com/collective/collective.tiles.bootstrapslider",
+    url="https://github.com/collective/collective.tiles.carousel",
     project_urls={
-        "PyPI": "https://pypi.python.org/pypi/collective.tiles.bootstrapslider",
-        "Source": "https://github.com/collective/collective.tiles.bootstrapslider",
-        "Tracker": "https://github.com/collective/collective.tiles.bootstrapslider/issues",
-        # 'Documentation': 'https://collective.tiles.bootstrapslider.readthedocs.io/en/latest/',
+        "PyPI": "https://pypi.python.org/pypi/collective.tiles.carousel",
+        "Source": "https://github.com/collective/collective.tiles.carousel",
+        "Tracker": "https://github.com/collective/collective.tiles.carousel/issues",
+        # 'Documentation': 'https://collective.tiles.carousel.readthedocs.io/en/latest/',
     },
     license="GPL version 2",
     packages=find_packages("src", exclude=["ez_setup"]),
@@ -71,6 +71,6 @@ setup(
     [z3c.autoinclude.plugin]
     target = plone
     [console_scripts]
-    update_locale = collective.tiles.bootstrapslider.locales.update:update_locale
+    update_locale = collective.tiles.carousel.locales.update:update_locale
     """,
 )

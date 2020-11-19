@@ -1,6 +1,6 @@
-from collective.tiles.bootstrapslider import _
-from collective.tiles.bootstrapslider.base import BaseSliderTile
-from collective.tiles.bootstrapslider.base import ISliderBase
+from collective.tiles.carousel import _
+from collective.tiles.carousel.base import BaseSliderTile
+from collective.tiles.carousel.base import ISliderBase
 from zope import schema
 from zope.schema.vocabulary import SimpleVocabulary
 

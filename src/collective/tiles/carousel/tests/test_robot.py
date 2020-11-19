@@ -1,5 +1,5 @@
-from collective.tiles.bootstrapslider.testing import (  # noqa: E501,
-    COLLECTIVE_TILES_BOOTSTRAPSLIDER_ACCEPTANCE_TESTING,
+from collective.tiles.carousel.testing import (  # noqa: E501,
+    COLLECTIVE_TILES_CAROUSEL_ACCEPTANCE_TESTING,
 )
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
@@ -25,7 +25,7 @@ def test_suite():
             [
                 layered(
                     robottestsuite,
-                    layer=COLLECTIVE_TILES_BOOTSTRAPSLIDER_ACCEPTANCE_TESTING,
+                    layer=COLLECTIVE_TILES_CAROUSEL_ACCEPTANCE_TESTING,
                 ),
             ]
         )

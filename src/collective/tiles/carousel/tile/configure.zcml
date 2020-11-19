@@ -2,11 +2,11 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="collective.tiles.bootstrapslider">
+    i18n_domain="collective.tiles.carousel">
 
   <!-- Publish static files -->
   <plone:static
-      name="collective.tiles.bootstrapslider"
+      name="collective.tiles.carousel"
       type="plone"
       directory="static"
       />
@@ -17,12 +17,12 @@
       class=".tile.SliderTile"
       description=""
       for="*"
-      layer="collective.tiles.bootstrapslider.interfaces.ICollectiveTilesBootstrapsliderLayer"
-      name="collective.tiles.bootstrapslider"
+      layer="collective.tiles.carousel.interfaces.ICollectiveTilesCarouselLayer"
+      name="collective.tiles.carousel"
       permission="zope2.View"
       schema=".tile.ISliderTile"
       template="tile.pt"
-      title="Bootstrapslider"
+      title="Carousel"
       />
 
 

@@ -42,7 +42,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "collective.tiles.bootstrapslider"
+project = "collective.tiles.carousel"
 copyright = "Peter Holzer (agitator)"
 author = "Peter Holzer (agitator)"
 
@@ -199,7 +199,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "collective.tiles.bootstrapsliderdoc"
+htmlhelp_basename = "collective.tiles.carouseldoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
