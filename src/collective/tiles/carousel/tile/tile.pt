@@ -1,8 +1,10 @@
-<html tal:define="images view/images | nothing;">
+<html tal:define="items view/items | nothing;">
 <body>
-<tal:slider tal:condition="images">
+<tal:slider tal:condition="items">
   <tal:def define="
-      image_scale view/data/image_scale | string: large;
+      portal context/@@plone_portal_state/portal;
+      image_scale portal/@@image_scale;
+      scale view/data/image_scale | string: large;
       show_title view/data/show_title | None;
       show_description view/data/show_description | None;
       fullscreen python: view.data.get('allow_fullscreen') and 'fullscreen' or '';
@@ -13,49 +15,42 @@
     ">
     <div id="carousel-${view/id}" class="carousel ${darkvariant} slide" data-ride="carousel">
 
-      <ol class="carousel-indicators">
-        <tal:indicators repeat="image images">
-          <li data-target="#carousel-${view/id}" data-slide-to="${python:repeat.image.index}" 
-            class="${python:repeat.image.index == 0 and 'active' or None}"></li>
+      <ol class="carousel-indicators" tal:condition="view/data/indicators">
+        <tal:indicators repeat="item items">
+          <li data-target="#carousel-${view/id}" data-slide-to="${python:repeat.item.index}" 
+            class="${python:repeat.item.index == 0 and 'active' or None}"></li>
         </tal:indicators>
       </ol>
 
       <div class="carousel-inner">
-        <tal:slide repeat="image images">
-        <div class="carousel-item ${python:repeat.image.index == 0 and 'active' or None}" data-interval="">
-          <tal:image define="
-              description image/description | nothing;
-              link image/link | nothing;
-              image_src python:image.get(image_scale);
-              ">
-              <img class="d-block w-100" src="${image_src}" alt="${description}" />
+        <tal:slide repeat="item items">
+        <div class="carousel-item ${python:repeat.item.index == 0 and 'active' or None}" data-interval="">
+          <tal:item>
+              <img tal:replace="structure item/tag" class="d-block w-100" />
               <div class="carousel-caption d-none d-md-block" 
                 tal:condition="python:show_title or show_description">
-                <h5 tal:condition="python:show_title and image.title" 
-                  tal:content="image/title">Title</h5>
-                <p tal:condition="python:show_description and image.description" 
-                  tal:content="image/description">Description</p>
+                <h5 tal:condition="python:show_title and item['title']" 
+                  tal:content="item/title">Title</h5>
+                <p tal:condition="python:show_description and item['description']" 
+                  tal:content="item/description">Description</p>
               </div>
-          </tal:image>
+          </tal:item>
         </div>
         </tal:slide>
       </div>
 
-
-      <a class="carousel-control-prev" href="#carousel-${view/id}" role="button" data-slide="prev">
+      <a class="carousel-control-prev" tal:condition="view/data/controls"
+        href="#carousel-${view/id}" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </a>
-      <a class="carousel-control-next" href="#carousel-${view/id}" role="button" data-slide="next">
+      <a 
+        class="carousel-control-next" tal:condition="view/data/controls"
+          href="#carousel-${view/id}" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </a>
     </div>
-
-
-
-
-
 
   </tal:def>
 </tal:slider>

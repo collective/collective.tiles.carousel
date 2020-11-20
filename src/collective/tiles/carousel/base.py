@@ -34,12 +34,23 @@ def image_scales(context):
 class ISliderBase(Schema):
     """Basic Image Tile Schema."""
 
+    form.widget("carousel_items", RelatedItemsFieldWidget)
+    carousel_items = schema.List(
+        title=_("Carousel Items"),
+        description=_(
+            "Manually select images or folders of images to display in slider.",
+        ),
+        required=False,
+        value_type=schema.Choice(
+            vocabulary="plone.app.vocabularies.Catalog",
+        ),
+    )
+
     form.widget("query", QueryStringFieldWidget)
     query = schema.List(
         title=_("Search terms"),
         description=_(
-            "Define the search terms for the images you want to use. "
-            "The list of results will be dynamically updated",
+            "Define the search terms for the items you want to use.",
         ),
         required=False,
         value_type=schema.Dict(
@@ -48,34 +59,52 @@ class ISliderBase(Schema):
         ),
     )
 
-    form.widget("carousel_items", RelatedItemsFieldWidget)
-    carousel_items = schema.List(
-        title=_("Carousel Items"),
-        description=_(
-            "Select images or folders of images to display in slider",
-        ),
-        required=False,
-        value_type=schema.Choice(
-            vocabulary="plone.app.vocabularies.Catalog",
-        ),
-    )
+    # sort_on = schema.TextLine(
+    #     title=_("Sort on"),
+    #     description=_("Sort on this index"),
+    #     required=False,
+    # )
 
-    sort_on = schema.TextLine(
-        title=_("Sort on"),
-        description=_("Sort on this index"),
-        required=False,
-    )
-
-    sort_reversed = schema.Bool(
-        title=_("Reversed order"),
-        description=_("Sort the results in reversed order"),
-        required=False,
-    )
+    # sort_reversed = schema.Bool(
+    #     title=_("Reversed order"),
+    #     description=_("Sort the results in reversed order"),
+    #     required=False,
+    # )
 
     image_scale = schema.Choice(
         title=_("Image Scale"),
         source=image_scales,
         default="large",
+    )
+
+    crop = schema.Choice(
+        title=_("Crop Images"),
+        description=_("Collection will fallback to items if no collection available"),
+        vocabulary=SimpleVocabulary(
+            [
+                SimpleVocabulary.createTerm(
+                    "keep",
+                    "keep",
+                    _("disabled"),
+                ),
+                SimpleVocabulary.createTerm(
+                    "scale-crop-to-fill",
+                    "scale-crop-to-fill",
+                    _("cover"),
+                ),
+                SimpleVocabulary.createTerm(
+                    "scale-crop-to-fit",
+                    "scale-crop-to-fit",
+                    _("contain"),
+                ),
+            ]
+        ),
+    )
+
+    image_class = schema.TextLine(
+        title=_("Image Class"),
+        default="d-block w-100",
+        required=False,
     )
 
 
@@ -125,100 +154,32 @@ class BaseSliderTile(BaseTile):
             values.append(name)
         return values
 
-    def get_image_data_from_brain(self, brain):
-        base_url = brain.getURL()
-        related = self.get_related(brain.getObject())
-        data = {
-            "original": base_url,
-            "title": brain.Title,
-            "description": brain.Description or "",
-        }
-        if related:
-            data["link"] = f"{related.absolute_url()}/view"
-        for value in self.image_sizes:
-            data[value] = "{}/@@images/image/{}".format(
-                base_url,
-                value,
-            )
-        return data
-
-    def get_image_data(self, im):
-        base_url = im.absolute_url()
-        related = self.get_related(im)
-        data = {
-            "original": base_url,
-            "title": im.Title(),
-            "description": im.Description() or "",
-        }
-        if related:
-            data["link"] = f"{related.absolute_url()}/view"
-        for value in self.image_sizes:
-            data[value] = "{}/@@images/image/{}".format(
-                base_url,
-                value,
-            )
-        return data
-
-    def get_images_in_folder(self, brain):
-        if brain.portal_type == "Folder":
-            # get contents
-            folder = brain.getObject()
-            images = folder.getFolderContents()
-            results = []
-            for image in images:
-                if image.portal_type == "Image":
-                    results.append(self.get_image_data_from_brain(image))
-                else:
-                    obj = image.getObject()
-                    if getattr(obj, "image", None) and getattr(
-                        obj.image, "contentType", None
-                    ):
-                        results.append(self.get_image_data(obj))
-            return results
-        else:
-            return [self.get_image_data_from_brain(brain)]
-
     @property
-    def images(self):
-        if self.data.get("carousel_items"):
-            return self.query_images()
-        else:
-            return self.get_selected_images()
+    def items(self):
+        items = []
+        # if getattr(self, "carousel_items", None):
+        #     return
+        if getattr(self, "query", None):
+            items.extend([x.getObject() for x in api.content.find(**self.query)])
 
-    def query_images(self):
-        catalog = self.catalog
-        results = []
-        query = self.query
-        query["hasImage"] = True
-        for brain in catalog(**query):
-            results.append(self.get_image_data_from_brain(brain))
-        return results
+        result = []
+        for obj in items:
+            result.append(self.get_item_info(obj))
+        return result
 
-    def get_selected_images(self):
-        results = []
-        catalog = self.catalog
-        brains = list(catalog(UID=self.data.get("images", [])))
-        # we need to order this since catalog results are not ordered
-        for uid in self.data.get("images") or []:
-            found = False
-            for brain in brains:
-                if brain.UID == uid:
-                    found = brain
-                    break
-            if not found:
-                continue
-            brains.remove(found)
-            if found.is_folderish:
-                results.extend(self.get_images_in_folder(brain))
-            else:
-                results.append(self.get_image_data_from_brain(found))
-        return results
+    def get_item_info(self, obj):
+        item = {}
+        item["title"] = obj.title
+        item["description"] = obj.description
+        item["tag"] = self.get_tag(obj)
+        return item
 
-    def get_related(self, obj):
-        try:
-            item = obj.relatedItems[0]
-        except Exception:
-            return None
-        if item.isBroken():
-            return
-        return item.to_object
+    def get_tag(self, obj):
+        scale_util = api.content.get_view("images", obj, self.request)
+        return scale_util.tag(
+            fieldname="image",
+            mode=self.data.get("crop"),
+            scale=self.data.get("image_scale"),
+            css_class=self.data.get("image_class"),
+            alt=obj.description or obj.title,
+        )
