@@ -1,13 +1,18 @@
+from collections import OrderedDict
 from collective.tiles.sliders import _
 from collective.tiles.sliders.utils import parse_query_from_data
 from plone import api
 from plone import tiles
+from plone.app.contenttypes.interfaces import ICollection
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives as form
+from plone.dexterity.interfaces import IDexterityContainer
 from plone.memoize import view
 from plone.supermodel.model import Schema
 from plone.tiles.interfaces import IPersistentTile
+from z3c.relationfield.schema import RelationChoice
+from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.interface import implementer
 from zope.interface import provider
@@ -34,16 +39,25 @@ def image_scales(context):
 class ISliderBase(Schema):
     """Basic Image Tile Schema."""
 
-    form.widget("carousel_items", RelatedItemsFieldWidget)
-    carousel_items = schema.List(
+    carousel_items = RelationList(
         title=_("Carousel Items"),
         description=_(
             "Manually select images or folders of images to display in slider.",
         ),
-        required=False,
-        value_type=schema.Choice(
-            vocabulary="plone.app.vocabularies.Catalog",
+        default=[],
+        value_type=RelationChoice(
+            title=u"Carousel Items", vocabulary="plone.app.vocabularies.Catalog"
         ),
+        required=False,
+    )
+    form.widget(
+        "carousel_items",
+        RelatedItemsFieldWidget,
+        vocabulary="plone.app.vocabularies.Catalog",
+        pattern_options={
+            "orderable": True,
+            "recentlyUsed": True,
+        },
     )
 
     form.widget("query", QueryStringFieldWidget)
@@ -59,17 +73,17 @@ class ISliderBase(Schema):
         ),
     )
 
-    # sort_on = schema.TextLine(
-    #     title=_("Sort on"),
-    #     description=_("Sort on this index"),
-    #     required=False,
-    # )
+    sort_on = schema.TextLine(
+        description=_(u"Sort on this index"),
+        required=False,
+        title=_(u"Sort on"),
+    )
 
-    # sort_reversed = schema.Bool(
-    #     title=_("Reversed order"),
-    #     description=_("Sort the results in reversed order"),
-    #     required=False,
-    # )
+    sort_reversed = schema.Bool(
+        description=_(u"Sort the results in reversed order"),
+        required=False,
+        title=_(u"Reversed order"),
+    )
 
     image_scale = schema.Choice(
         title=_("Image Scale"),
@@ -156,14 +170,48 @@ class BaseSliderTile(BaseTile):
 
     @property
     def items(self):
-        items = []
-        # if getattr(self, "carousel_items", None):
-        #     return
-        if getattr(self, "query", None):
-            items.extend([x.getObject() for x in api.content.find(**self.query)])
+        items = OrderedDict()
+        if "carousel_items" in self.data:
+            for item in self.data["carousel_items"]:
+                print(items)
+                if ICollection.providedBy(item.to_object):
+                    items.update(
+                        OrderedDict.fromkeys(
+                            [
+                                x.getObject()
+                                for x in item.to_object.results(
+                                    brains=True, batch=False
+                                )
+                            ]
+                        )
+                    )
+                    continue
+                if IDexterityContainer.providedBy(item.to_object):
+                    items.update(
+                        OrderedDict.fromkeys(
+                            [
+                                x.getObject()
+                                for x in api.content.find(
+                                    path="/".join(item.to_object.getPhysicalPath()),
+                                    sort_on="getObjPositionInParent",
+                                    depth=1,
+                                )
+                            ]
+                        )
+                    )
+                    continue
+                else:
+                    items[item.to_object] = None
 
+        if getattr(self, "query", None):
+            items.update(
+                OrderedDict.fromkeys(
+                    [x.getObject() for x in api.content.find(**self.query)]
+                )
+            )
+        print(items)
         result = []
-        for obj in items:
+        for obj in items.keys():
             result.append(self.get_item_info(obj))
         return result
 
@@ -172,6 +220,8 @@ class BaseSliderTile(BaseTile):
         item["title"] = obj.title
         item["description"] = obj.description
         item["tag"] = self.get_tag(obj)
+        item["link"] = obj.absolute_url()
+        item["type"] = obj.portal_type
         return item
 
     def get_tag(self, obj):
