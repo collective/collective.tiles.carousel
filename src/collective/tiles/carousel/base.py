@@ -1,9 +1,13 @@
 from collections import OrderedDict
+from collective.tiles.carousel.utils import parse_query_from_data
 from collective.tiles.sliders import _
-from collective.tiles.sliders.utils import parse_query_from_data
 from plone import api
 from plone import tiles
+from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL_SCHEMES
 from plone.app.contenttypes.interfaces import ICollection
+from plone.app.contenttypes.utils import replace_link_variables_by_paths
+from plone.app.querystring import queryparser
+from plone.app.querystring.interfaces import IParsedQueryIndexModifier
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives as form
@@ -14,6 +18,7 @@ from plone.tiles.interfaces import IPersistentTile
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
+from zope.component import getUtilitiesFor
 from zope.interface import implementer
 from zope.interface import provider
 from zope.schema.interfaces import IContextSourceBinder
@@ -50,6 +55,7 @@ class ISliderBase(Schema):
         ),
         required=False,
     )
+
     form.widget(
         "carousel_items",
         RelatedItemsFieldWidget,
@@ -168,12 +174,38 @@ class BaseSliderTile(BaseTile):
             values.append(name)
         return values
 
+    def parse_query_from_data(data, context=None):
+        """Parse query from data dictionary"""
+        if context is None:
+            context = api.portal.get()
+        query = data.get("query", {}) or {}
+        try:
+            parsed = queryparser.parseFormquery(context, query)
+        except KeyError:
+            parsed = {}
+
+        index_modifiers = getUtilitiesFor(IParsedQueryIndexModifier)
+        for name, modifier in index_modifiers:
+            if name in parsed:
+                new_name, query = modifier(parsed[name])
+                parsed[name] = query
+                # if a new index name has been returned, we need to replace
+                # the native ones
+                if name != new_name:
+                    del parsed[name]
+                    parsed[new_name] = query
+
+        if data.get("sort_on"):
+            parsed["sort_on"] = data["sort_on"]
+        if data.get("sort_reversed", False):
+            parsed["sort_order"] = "reverse"
+        return parsed
+
     @property
     def items(self):
         items = OrderedDict()
         if "carousel_items" in self.data:
             for item in self.data["carousel_items"]:
-                print(items)
                 if ICollection.providedBy(item.to_object):
                     items.update(
                         OrderedDict.fromkeys(
@@ -209,7 +241,6 @@ class BaseSliderTile(BaseTile):
                     [x.getObject() for x in api.content.find(**self.query)]
                 )
             )
-        print(items)
         result = []
         for obj in items.keys():
             result.append(self.get_item_info(obj))
@@ -220,7 +251,7 @@ class BaseSliderTile(BaseTile):
         item["title"] = obj.title
         item["description"] = obj.description
         item["tag"] = self.get_tag(obj)
-        item["link"] = obj.absolute_url()
+        item["link"] = self.get_link(obj)
         item["type"] = obj.portal_type
         return item
 
@@ -233,3 +264,42 @@ class BaseSliderTile(BaseTile):
             css_class=self.data.get("image_class"),
             alt=obj.description or obj.title,
         )
+
+    def _url_uses_scheme(self, schemes, url=None):
+        for scheme in schemes:
+            if url.startswith(scheme):
+                return True
+        return False
+
+    def get_link(self, obj):
+        """Get target for linked slide."""
+        if self.data.get("link_slides") == "disabled":
+            return
+        if self.data.get("link_slides") == "collection":
+            return obj.aq_parent.absolute_url()
+        else:
+            # Link object
+            if getattr(obj, "remoteUrl", None):
+                # Returns the url with link variables replaced.
+                url = replace_link_variables_by_paths(obj, obj.remoteUrl)
+
+                if self._url_uses_scheme(NON_RESOLVABLE_URL_SCHEMES, url=obj.remoteUrl):
+                    # For non http/https url schemes, there is no path to resolve.
+                    return url
+
+                if url.startswith("."):
+                    # we just need to adapt ../relative/links, /absolute/ones work
+                    # anyway -> this requires relative links to start with ./ or
+                    # ../
+                    context_state = self.context.restrictedTraverse(
+                        "@@plone_context_state"
+                    )
+                    url = "/".join([context_state.canonical_object_url(), url])
+                else:
+                    if not url.startswith(("http://", "https://")):
+                        url = self.request["SERVER_URL"] + url
+                return url
+            if getattr(obj, "relatedItems", None):
+                return obj.relatedItems[0].to_object.absolute_url()
+            else:
+                return obj.absolute_url()

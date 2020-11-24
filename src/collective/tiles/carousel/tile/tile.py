@@ -75,16 +75,16 @@ class ISliderTile(ISliderBase):
         ),
     )
 
-    link = schema.Choice(
-        title=_("Slides with Links"),
+    link_slides = schema.Choice(
+        title=_("Link slide"),
         description=_("Collection will fallback to items if no collection available"),
-        default="items",
+        default="item",
         vocabulary=SimpleVocabulary(
             [
                 SimpleVocabulary.createTerm(
-                    "items",
-                    "items",
-                    _("to Items"),
+                    "item",
+                    "item",
+                    _("to Item"),
                 ),
                 SimpleVocabulary.createTerm(
                     "collection",
@@ -92,8 +92,8 @@ class ISliderTile(ISliderBase):
                     _("to Collection"),
                 ),
                 SimpleVocabulary.createTerm(
-                    "disable",
-                    "disable",
+                    "disabled",
+                    "disabled",
                     _("Disable"),
                 ),
             ]
