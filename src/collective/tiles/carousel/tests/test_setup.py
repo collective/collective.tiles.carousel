@@ -30,15 +30,11 @@ class TestSetup(unittest.TestCase):
 
     def test_product_installed(self):
         """Test if collective.tiles.carousel is installed."""
-        self.assertTrue(
-            self.installer.isProductInstalled("collective.tiles.carousel")
-        )
+        self.assertTrue(self.installer.isProductInstalled("collective.tiles.carousel"))
 
     def test_browserlayer(self):
         """Test that ICollectiveTilesCarouselLayer is registered."""
-        from collective.tiles.carousel.interfaces import (
-            ICollectiveTilesCarouselLayer,
-        )
+        from collective.tiles.carousel.interfaces import ICollectiveTilesCarouselLayer
         from plone.browserlayer import utils
 
         self.assertIn(ICollectiveTilesCarouselLayer, utils.registered_layers())
@@ -61,17 +57,11 @@ class TestUninstall(unittest.TestCase):
 
     def test_product_uninstalled(self):
         """Test if collective.tiles.carousel is cleanly uninstalled."""
-        self.assertFalse(
-            self.installer.isProductInstalled("collective.tiles.carousel")
-        )
+        self.assertFalse(self.installer.isProductInstalled("collective.tiles.carousel"))
 
     def test_browserlayer_removed(self):
         """Test that ICollectiveTilesCarouselLayer is removed."""
-        from collective.tiles.carousel.interfaces import (
-            ICollectiveTilesCarouselLayer,
-        )
+        from collective.tiles.carousel.interfaces import ICollectiveTilesCarouselLayer
         from plone.browserlayer import utils
 
-        self.assertNotIn(
-            ICollectiveTilesCarouselLayer, utils.registered_layers()
-        )
+        self.assertNotIn(ICollectiveTilesCarouselLayer, utils.registered_layers())
