@@ -300,6 +300,7 @@ class BaseSliderTile(BaseTile):
                         url = self.request["SERVER_URL"] + url
                 return url
             if getattr(obj, "relatedItems", None):
+            if len(getattr(obj, "relatedItems", [])) > 0 and obj.relatedItems[0].to_object:
                 return obj.relatedItems[0].to_object.absolute_url()
             else:
                 return obj.absolute_url()
