@@ -13,18 +13,21 @@
       navigation python:view.data.get('navigation') and 'true' or 'false';
       darkvariant python:view.data.get('darkvariant') and 'carousel-dark' or '';
     ">
-    <div id="carousel-${view/id}" class="carousel ${darkvariant} slide" data-ride="carousel">
+    <div id="carousel-${view/id}" class="carousel ${darkvariant} slide" data-bs-ride="carousel">
 
       <ol class="carousel-indicators" tal:condition="view/data/indicators">
         <tal:indicators repeat="item items">
-          <li data-target="#carousel-${view/id}" data-slide-to="${python:repeat.item.index}" 
+          <li data-bs-target="#carousel-${view/id}" data-bs-slide-to="${python:repeat.item.index}" 
             class="${python:repeat.item.index == 0 and 'active' or None}"></li>
         </tal:indicators>
       </ol>
 
       <div class="carousel-inner">
         <tal:slide repeat="item items">
-        <div class="carousel-item ${python:repeat.item.index == 0 and 'active' or None}" data-interval="">
+        <div class="carousel-item ${python:repeat.item.index == 0 and 'active' or None}" data-bs-interval="">
+          <div tal:content="item/link"></div>
+          <div tal:content="item/title"></div>
+          <div tal:content="item/type"></div>
           <tal:item>
               <img tal:replace="structure item/tag" class="d-block w-100" />
               <div class="carousel-caption d-none d-md-block" 
@@ -40,13 +43,13 @@
       </div>
 
       <a class="carousel-control-prev" tal:condition="view/data/controls"
-        href="#carousel-${view/id}" role="button" data-slide="prev">
+        href="#carousel-${view/id}" role="button" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </a>
       <a 
         class="carousel-control-next" tal:condition="view/data/controls"
-          href="#carousel-${view/id}" role="button" data-slide="next">
+          href="#carousel-${view/id}" role="button" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </a>
