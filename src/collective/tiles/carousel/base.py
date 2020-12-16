@@ -273,12 +273,17 @@ class BaseSliderTile(BaseTile):
 
     def get_link(self, obj):
         """Get target for linked slide."""
+
+        # no linking
         if self.data.get("link_slides") == "disabled":
             return
+
+        # link to parent
         if self.data.get("link_slides") == "collection":
             return obj.aq_parent.absolute_url()
+
         else:
-            # Link object
+            # link to external urls
             if getattr(obj, "remoteUrl", None):
                 # Returns the url with link variables replaced.
                 url = replace_link_variables_by_paths(obj, obj.remoteUrl)
@@ -299,8 +304,11 @@ class BaseSliderTile(BaseTile):
                     if not url.startswith(("http://", "https://")):
                         url = self.request["SERVER_URL"] + url
                 return url
-            if getattr(obj, "relatedItems", None):
+
+            # link to first related item
             if len(getattr(obj, "relatedItems", [])) > 0 and obj.relatedItems[0].to_object:
                 return obj.relatedItems[0].to_object.absolute_url()
+
+            # link to object
             else:
                 return obj.absolute_url()
