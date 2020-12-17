@@ -375,7 +375,7 @@ def availableSliderViewsVocabulary(context):
     """Get available views for listing content as vocabulary"""
 
     registry = getUtility(IRegistry)
-    listing_views = registry.get("collective.tiles.carousel.slider_views", {})
+    listing_views = registry.get("collective.tiles.carousel.slide_views", {})
     if len(listing_views) == 0:
         listing_views = {
             "slide_view": u"Slider view",

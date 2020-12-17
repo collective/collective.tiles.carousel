@@ -50,7 +50,7 @@
   </records>
 
 
-  <record name="collective.tiles.carousel.listing_views">
+  <record name="collective.tiles.carousel.slide_views">
     <field type="plone.registry.field.Dict">
       <title>Carousel Tile Listing Views</title>
       <key_type type="plone.registry.field.TextLine" />
