@@ -30,6 +30,8 @@ from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL_SCHEMES
+from plone.app.contenttypes.utils import replace_link_variables_by_paths
 
 
 @provider(IContextSourceBinder)
@@ -308,6 +310,58 @@ class SliderTile(Tile):
         alsoProvides(self.request, ICollectiveTilesCarouselLayer)
         return getMultiAdapter((self.context, self.request), name=view)(**options)
 
+    @property
+    def use_view_action(self):
+        registry = getUtility(IRegistry)
+        return registry.get('plone.types_use_view_action_in_listings', [])
+
+    def get_link(self, obj):
+        """Get target for linked slide."""
+
+        # no linking
+        if self.data.get("link_slides") == "disabled":
+            return
+
+        # link to parent
+        if self.data.get("link_slides") == "collection":
+            return obj.aq_parent.absolute_url()
+
+        else:
+            # link to external urls
+            if getattr(obj, "remoteUrl", None):
+                # Returns the url with link variables replaced.
+                url = replace_link_variables_by_paths(obj, obj.remoteUrl)
+
+                if self._url_uses_scheme(NON_RESOLVABLE_URL_SCHEMES, url=obj.remoteUrl):
+                    # For non http/https url schemes, there is no path to resolve.
+                    return url
+
+                if url.startswith("."):
+                    # we just need to adapt ../relative/links, /absolute/ones work
+                    # anyway -> this requires relative links to start with ./ or
+                    # ../
+                    context_state = self.context.restrictedTraverse(
+                        "@@plone_context_state"
+                    )
+                    url = "/".join([context_state.canonical_object_url(), url])
+                else:
+                    if not url.startswith(("http://", "https://")):
+                        url = self.request["SERVER_URL"] + url
+                return url
+
+            # link to first related item
+            if (
+                len(getattr(obj, "relatedItems", [])) > 0
+                and obj.relatedItems[0].to_object
+            ):
+                item_url = obj.relatedItems[0].to_object.absolute_url()
+                return obj.portal_type in self.use_view_action and item_url+'/view' or item_url;
+
+            # link to object
+            else:
+                item_url = obj.absolute_url()
+                return obj.portal_type in self.use_view_action and item_url+'/view' or item_url;
+
 
 @provider(IVocabularyFactory)
 def availableSliderViewsVocabulary(context):
@@ -318,7 +372,7 @@ def availableSliderViewsVocabulary(context):
     if len(listing_views) == 0:
         listing_views = {
             "slide_view": u"Slider view",
-            "full_view": u"Full view",
+            "slide_full_view": u"Full view",
         }
     voc = []
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):

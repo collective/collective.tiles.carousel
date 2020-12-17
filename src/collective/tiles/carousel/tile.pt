@@ -10,6 +10,7 @@
       pager python:view.data.get('pager') and 'true' or 'false';
       navigation python:view.data.get('navigation') and 'true' or 'false';
       darkvariant python:view.data.get('darkvariant') and 'carousel-dark' or '';
+      link_slides python:view.data.get('link_slides') != 'disabled';
     ">
     <div id="carousel-${view/id}" class="carousel ${darkvariant} slide" data-bs-ride="carousel">
 
@@ -22,8 +23,16 @@
 
       <div class="carousel-inner">
         <tal:slide repeat="item items">
-        <div class="carousel-item ${python:repeat.item.index == 0 and 'active' or None}" data-bs-interval="">
-          <div tal:content="structure python:view.item_view(item, view.data)">Listing</div>
+        <div class="carousel-item ${python:repeat.item.index == 0 and 'active' or None}" data-bs-interval="${python:view.data['carousel_speed']}">
+
+          <a href="${python:view.get_link(item)}" tal:condition="link_slides">
+            <div tal:content="structure python:view.item_view(item, view.data)">Listing</div>
+          </a>
+
+          <tal:item tal:condition="python: not link_slides">
+            <div tal:content="structure python:view.item_view(item, view.data)">Listing</div>
+          </tal:item>
+
         </div>
         </tal:slide>
       </div>
