@@ -1,14 +1,11 @@
-from collections import defaultdict
 from collections import OrderedDict
 from collective.tiles.carousel import _
-from collective.tiles.carousel.utils import parse_query_from_data
 from collective.tiles.carousel.interfaces import ICollectiveTilesCarouselLayer
+from collective.tiles.carousel.utils import parse_query_from_data
 from operator import itemgetter
 from plone import api
-from plone.tiles import Tile
 from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL_SCHEMES
 from plone.app.contenttypes.interfaces import ICollection
-from plone.app.contenttypes.utils import replace_link_variables_by_paths
 from plone.app.querystring import queryparser
 from plone.app.querystring.interfaces import IParsedQueryIndexModifier
 from plone.app.z3cform.widget import QueryStringFieldWidget
@@ -18,20 +15,21 @@ from plone.dexterity.interfaces import IDexterityContainer
 from plone.memoize import view
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
+from plone.tiles import Tile
 from plone.tiles.interfaces import IPersistentTile
 from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
+from zope.component import getMultiAdapter
 from zope.component import getUtilitiesFor
 from zope.component import getUtility
+from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.interface import provider
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
-from zope.interface import alsoProvides
-from zope.component import getMultiAdapter
 
 
 @provider(IContextSourceBinder)
@@ -180,10 +178,10 @@ class ISliderTile(Schema):
         ),
     )
 
-    slider_template = schema.Choice(
+    slide_template = schema.Choice(
         title=_(u"Display mode"),
         source=_(u"Available Slider Views"),
-        default="slider_view",
+        default="slide_view",
         required=True,
     )
 
@@ -303,8 +301,7 @@ class SliderTile(Tile):
         return result
 
     def item_view(self, item, data):
-        view = self.view_template or "slide_view"
-        # view = "slide_view"
+        view = data['slide_template'] or "slide_view"
         options = dict()
         options['item'] = item
         options['data'] = data
@@ -320,7 +317,7 @@ def availableSliderViewsVocabulary(context):
     listing_views = registry.get("collective.tiles.carousel.slider_views", {})
     if len(listing_views) == 0:
         listing_views = {
-            "slider_view": u"Slider view",
+            "slide_view": u"Slider view",
             "full_view": u"Full view",
         }
     voc = []
