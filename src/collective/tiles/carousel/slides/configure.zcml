@@ -13,6 +13,7 @@
 
   <browser:page
       name="slide_view"
+      class=".views.SlideView"
       for="*"
       layer="collective.tiles.carousel.interfaces.ICollectiveTilesCarouselLayer"
       permission="zope2.View"

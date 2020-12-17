@@ -299,91 +299,15 @@ class SliderTile(Tile):
             )
         result = []
         for obj in items.keys():
-            result.append(self.get_item_info(obj))
+            result.append(obj)
         return result
 
-    def get_item_info(self, obj):
-        item = {}
-        # item['obj'] = obj
-        item['data'] = self.data
-        item["title"] = obj.title
-        # item["show_title"] = self.data['show_title']
-        item["description"] = obj.description
-        # item["show_description"] = self.data['show_description']
-        item["tag"] = self.get_tag(obj)
-        item["link"] = self.get_link(obj)
-        item["type"] = obj.portal_type
-        return item
-
-    def get_tag(self, obj):
-        scale_util = api.content.get_view("images", obj, self.request)
-        return scale_util.tag(
-            fieldname="image",
-            mode=self.data.get("crop") and "cover" or "keep",
-            scale=self.data.get("image_scale"),
-            css_class=self.data.get("image_class"),
-            alt=obj.description or obj.title,
-        )
-
-    def _url_uses_scheme(self, schemes, url=None):
-        for scheme in schemes:
-            if url.startswith(scheme):
-                return True
-        return False
-
-    def get_link(self, obj):
-        """Get target for linked slide."""
-
-        # no linking
-        if self.data.get("link_slides") == "disabled":
-            return
-
-        # link to parent
-        if self.data.get("link_slides") == "collection":
-            return obj.aq_parent.absolute_url()
-
-        else:
-            # link to external urls
-            if getattr(obj, "remoteUrl", None):
-                # Returns the url with link variables replaced.
-                url = replace_link_variables_by_paths(obj, obj.remoteUrl)
-
-                if self._url_uses_scheme(NON_RESOLVABLE_URL_SCHEMES, url=obj.remoteUrl):
-                    # For non http/https url schemes, there is no path to resolve.
-                    return url
-
-                if url.startswith("."):
-                    # we just need to adapt ../relative/links, /absolute/ones work
-                    # anyway -> this requires relative links to start with ./ or
-                    # ../
-                    context_state = self.context.restrictedTraverse(
-                        "@@plone_context_state"
-                    )
-                    url = "/".join([context_state.canonical_object_url(), url])
-                else:
-                    if not url.startswith(("http://", "https://")):
-                        url = self.request["SERVER_URL"] + url
-                return url
-
-            # link to first related item
-            if (
-                len(getattr(obj, "relatedItems", [])) > 0
-                and obj.relatedItems[0].to_object
-            ):
-                return obj.relatedItems[0].to_object.absolute_url()
-
-            # link to object
-            else:
-                return obj.absolute_url()
-
-    def item_view(self, item):
-
-        # view = self.view_template or "slide_view"
-        # import pdb; pdb.set_trace()
-        view = "slide_view"
-        options = dict(original_context=self.context)
+    def item_view(self, item, data):
+        view = self.view_template or "slide_view"
+        # view = "slide_view"
+        options = dict()
         options['item'] = item
-        options['item'] = item
+        options['data'] = data
         alsoProvides(self.request, ICollectiveTilesCarouselLayer)
         return getMultiAdapter((self.context, self.request), name=view)(**options)
 

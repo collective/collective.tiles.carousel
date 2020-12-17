@@ -23,22 +23,7 @@
       <div class="carousel-inner">
         <tal:slide repeat="item items">
         <div class="carousel-item ${python:repeat.item.index == 0 and 'active' or None}" data-bs-interval="">
-          <!-- <div tal:content="item/link"></div>
-          <div tal:content="item/title"></div>
-          <div tal:content="item/type"></div> -->
-          <!-- <tal:item>
-            <img tal:replace="structure item/tag" class="d-block w-100" />
-            <div class="carousel-caption d-none d-md-block" 
-              tal:condition="python:show_title or show_description">
-              <h5 tal:condition="python:show_title and item['title']" 
-                tal:content="item/title">Title</h5>
-              <p tal:condition="python:show_description and item['description']" 
-                tal:content="item/description">Description</p>
-            </div>
-          </tal:item> -->
-          <div tal:content="structure python:view.item_view(item)">Listing</div>
- 
-
+          <div tal:content="structure python:view.item_view(item, view.data)">Listing</div>
         </div>
         </tal:slide>
       </div>
