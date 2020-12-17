@@ -13,11 +13,20 @@
 
   <browser:page
       name="slide_view"
-      class=".views.SlideView"
+      class=".slide_view.SlideView"
       for="*"
       layer="collective.tiles.carousel.interfaces.ICollectiveTilesCarouselLayer"
       permission="zope2.View"
       template="slide_view.pt"
+      />
+
+  <browser:page
+      name="slide_full_view"
+      class=".slide_full_view.SlideFullView"
+      for="*"
+      layer="collective.tiles.carousel.interfaces.ICollectiveTilesCarouselLayer"
+      permission="zope2.View"
+      template="slide_full_view.pt"
       />
 
 

@@ -57,8 +57,8 @@
       <value_type type="plone.registry.field.TextLine" />
     </field>
     <value purge="false">
-      <element key="slider_view">Slider view</element>
-      <element key="full_view">Full view</element>
+      <element key="slide_view">Slider view</element>
+      <element key="slide_full_view">Full view</element>
     </value>
   </record>
 
