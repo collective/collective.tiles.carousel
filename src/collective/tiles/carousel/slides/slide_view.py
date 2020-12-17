@@ -4,9 +4,8 @@ from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL
 from plone.app.contenttypes.utils import replace_link_variables_by_paths
 from Products.Five import BrowserView
 
+
 class SlideView(BrowserView):
-
-
     def __call__(self, item, data):
         self.update(item, data)
         return self.index()
@@ -21,7 +20,7 @@ class SlideView(BrowserView):
         item["img_tag"] = self.get_tag(obj, data)
         item["link"] = self.get_link(obj, data)
         item["type"] = obj.portal_type
-        item['data'] = data
+        item["data"] = data
         return item
 
     def get_tag(self, obj, data):

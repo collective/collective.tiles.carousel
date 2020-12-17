@@ -6,6 +6,7 @@ from operator import itemgetter
 from plone import api
 from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL_SCHEMES
 from plone.app.contenttypes.interfaces import ICollection
+from plone.app.contenttypes.utils import replace_link_variables_by_paths
 from plone.app.querystring import queryparser
 from plone.app.querystring.interfaces import IParsedQueryIndexModifier
 from plone.app.z3cform.widget import QueryStringFieldWidget
@@ -30,8 +31,6 @@ from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
-from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL_SCHEMES
-from plone.app.contenttypes.utils import replace_link_variables_by_paths
 
 
 @provider(IContextSourceBinder)
@@ -303,17 +302,17 @@ class SliderTile(Tile):
         return result
 
     def item_view(self, item, data):
-        view = data['slide_template'] or "slide_view"
+        view = data["slide_template"] or "slide_view"
         options = dict()
-        options['item'] = item
-        options['data'] = data
+        options["item"] = item
+        options["data"] = data
         alsoProvides(self.request, ICollectiveTilesCarouselLayer)
         return getMultiAdapter((self.context, self.request), name=view)(**options)
 
     @property
     def use_view_action(self):
         registry = getUtility(IRegistry)
-        return registry.get('plone.types_use_view_action_in_listings', [])
+        return registry.get("plone.types_use_view_action_in_listings", [])
 
     def get_link(self, obj):
         """Get target for linked slide."""
@@ -355,12 +354,20 @@ class SliderTile(Tile):
                 and obj.relatedItems[0].to_object
             ):
                 item_url = obj.relatedItems[0].to_object.absolute_url()
-                return obj.portal_type in self.use_view_action and item_url+'/view' or item_url;
+                return (
+                    obj.portal_type in self.use_view_action
+                    and item_url + "/view"
+                    or item_url
+                )
 
             # link to object
             else:
                 item_url = obj.absolute_url()
-                return obj.portal_type in self.use_view_action and item_url+'/view' or item_url;
+                return (
+                    obj.portal_type in self.use_view_action
+                    and item_url + "/view"
+                    or item_url
+                )
 
 
 @provider(IVocabularyFactory)
