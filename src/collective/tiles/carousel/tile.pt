@@ -1,0 +1,64 @@
+<html tal:define="items view/items | nothing;">
+<body>
+<tal:slider tal:condition="items">
+  <tal:def define="
+      portal context/@@plone_portal_state/portal;
+      show_title view/data/show_title | None;
+      show_description view/data/show_description | None;
+      fullscreen python: view.data.get('allow_fullscreen') and 'fullscreen' or '';
+      autostart python:view.data.get('autostart') and 'true' or 'false';
+      pager python:view.data.get('pager') and 'true' or 'false';
+      navigation python:view.data.get('navigation') and 'true' or 'false';
+      darkvariant python:view.data.get('darkvariant') and 'carousel-dark' or '';
+    ">
+    <div id="carousel-${view/id}" class="carousel ${darkvariant} slide" data-bs-ride="carousel">
+
+      <ol class="carousel-indicators" tal:condition="view/data/indicators">
+        <tal:indicators repeat="item items">
+          <li data-bs-target="#carousel-${view/id}" data-bs-slide-to="${python:repeat.item.index}" 
+            class="${python:repeat.item.index == 0 and 'active' or None}"></li>
+        </tal:indicators>
+      </ol>
+
+      <div class="carousel-inner">
+        <tal:slide repeat="item items">
+        <div class="carousel-item ${python:repeat.item.index == 0 and 'active' or None}" data-bs-interval="">
+          <!-- <div tal:content="item/link"></div>
+          <div tal:content="item/title"></div>
+          <div tal:content="item/type"></div> -->
+          <!-- <tal:item>
+            <img tal:replace="structure item/tag" class="d-block w-100" />
+            <div class="carousel-caption d-none d-md-block" 
+              tal:condition="python:show_title or show_description">
+              <h5 tal:condition="python:show_title and item['title']" 
+                tal:content="item/title">Title</h5>
+              <p tal:condition="python:show_description and item['description']" 
+                tal:content="item/description">Description</p>
+            </div>
+          </tal:item> -->
+          <div tal:content="structure python:view.item_view(item)">Listing</div>
+ 
+
+        </div>
+        </tal:slide>
+      </div>
+
+      <a class="carousel-control-prev" tal:condition="view/data/controls"
+        href="#carousel-${view/id}" role="button" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </a>
+      <a 
+        class="carousel-control-next" tal:condition="view/data/controls"
+          href="#carousel-${view/id}" role="button" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </a>
+    </div>
+
+  </tal:def>
+</tal:slider>
+</body>
+</html>
+
+

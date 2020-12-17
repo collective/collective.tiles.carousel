@@ -9,8 +9,28 @@
 
   <include package="plone.app.tiles" />
   <include package="plone.tiles" />
-  <include package=".tile" />
+  <include package=".slides" />
 
+
+  <!-- Slider tile -->
+  <plone:tile
+      add_permission="cmf.ModifyPortalContent"
+      class=".tile.SliderTile"
+      description=""
+      for="*"
+      layer="collective.tiles.carousel.interfaces.ICollectiveTilesCarouselLayer"
+      name="collective.tiles.carousel"
+      permission="zope2.View"
+      schema=".tile.ISliderTile"
+      template="tile.pt"
+      title="Carousel"
+      />
+
+  <utility
+      component="collective.tiles.carousel.tile.availableSliderViewsVocabulary"
+      name="Available Slider Views"
+      />
+    
 
   <genericsetup:registerProfile
       name="default"
