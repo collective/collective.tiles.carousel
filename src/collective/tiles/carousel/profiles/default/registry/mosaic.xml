@@ -49,4 +49,19 @@
     <value key="weight">110</value>
   </records>
 
+
+  <record name="collective.tiles.carousel.listing_views">
+    <field type="plone.registry.field.Dict">
+      <title>Carousel Tile Listing Views</title>
+      <key_type type="plone.registry.field.TextLine" />
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value purge="false">
+      <element key="slider_view">Slider view</element>
+      <element key="full_view">Full view</element>
+    </value>
+  </record>
+
+
+
 </registry>
