@@ -322,6 +322,13 @@ class SliderTile(Tile):
         registry = getUtility(IRegistry)
         return registry.get("plone.types_use_view_action_in_listings", [])
 
+    def _url_uses_scheme(self, schemes, url=None):
+        url = url or self.context.remoteUrl
+        for scheme in schemes:
+            if url.startswith(scheme):
+                return True
+        return False
+
     def get_link(self, obj):
         """Get target for linked slide."""
 
