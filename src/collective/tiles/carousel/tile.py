@@ -98,6 +98,14 @@ class ISliderTile(Schema):
         title=_(u"Reversed order"),
     )
 
+    limit = schema.Int(
+        title=_(u'Limit'),
+        description=_(u'Limit Search Results'),
+        required=False,
+        default=12,
+        min=1,
+    )
+
     image_scale = schema.Choice(
         title=_("Image Scale"),
         source=image_scales,

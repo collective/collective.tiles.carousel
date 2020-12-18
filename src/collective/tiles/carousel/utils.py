@@ -31,6 +31,8 @@ def parse_query_from_data(data, context=None):
 
     if data.get("sort_on"):
         parsed["sort_on"] = data["sort_on"]
+    if data.get("limit"):
+        parsed["sort_limit"] = data["limit"]
     if data.get("sort_reversed", False):
         parsed["sort_order"] = "reverse"
     return parsed
