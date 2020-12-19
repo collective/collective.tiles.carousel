@@ -116,7 +116,7 @@ class ISliderTile(Schema):
 
     image_class = schema.TextLine(
         title=_("Image Class"),
-        default="d-block w-100",
+        default="img-fluid mx-auto d-block w-100",
         required=False,
     )
 
@@ -194,6 +194,12 @@ class ISliderTile(Schema):
         required=True,
     )
 
+    items_per_slide = schema.Choice(
+        title=_(u"Items per Slide"),
+        default=1,
+        values=(1, 2, 3, 4, 5, 6, 7, 8)
+    )
+
 
 @implementer(IPersistentTile)
 class SliderTile(Tile):
@@ -213,17 +219,12 @@ class SliderTile(Tile):
     def catalog(self):
         return api.portal.get_tool(name="portal_catalog")
 
-    sort_limit = 0
-
     def render(self):
         return self.index()
 
     @property
     def query(self):
-        parsed = parse_query_from_data(self.data, self.context)
-        if self.sort_limit:
-            parsed["sort_limit"] = self.sort_limit
-        return parsed
+        return parse_query_from_data(self.data, self.context)
 
     @property
     @view.memoize
@@ -307,7 +308,9 @@ class SliderTile(Tile):
         result = []
         for obj in items.keys():
             result.append(obj)
-        return result
+        ips = self.data.get('items_per_slide', 1)
+        slides = [result[i:i+ips] for i in [x*ips for x in range(0, int(len(result)/ips)+int(1))]]
+        return [x for x in slides if x]
 
     def item_view(self, item, data):
         view = data["slide_template"] or "slide_view"
