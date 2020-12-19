@@ -51,6 +51,18 @@ def image_scales(context):
 class ISliderTile(Schema):
     """A tile that shows a slider."""
 
+    title = schema.TextLine(
+        title=_(u'label_title', default=u'Title'),
+        required=False,
+        missing_value=u'',
+    )
+
+    description = schema.Text(
+        title=_(u'label_description', default=u'Summary'),
+        required=False,
+        missing_value=u'',
+    )
+
     carousel_items = RelationList(
         title=_("Carousel Items"),
         description=_(
