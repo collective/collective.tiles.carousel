@@ -2,7 +2,6 @@
 <metadata>
   <version>1000</version>
   <dependencies>
-    <dependency>profile-collective.tiles.sliders:base</dependency>
     <dependency>profile-plone.app.mosaic:default</dependency>
   </dependencies>
 </metadata>
