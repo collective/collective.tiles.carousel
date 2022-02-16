@@ -28,7 +28,11 @@ class SlideView(BrowserView):
         return scale_util.tag(
             fieldname="image",
             mode=data.get("crop") and "cover" or "keep",
-            scale=data.get("image_scale"),
+            scale=(
+                data.get("image_scale")
+                if data.get("image_scale", "") != "original"
+                else None
+            ),
             css_class=data.get("image_class"),
             alt=obj.description or obj.title,
         )
