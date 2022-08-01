@@ -22,7 +22,9 @@ class TestSetup(unittest.TestCase):
 
     def test_product_installed(self):
         """Test if collective.tiles.carousel is installed."""
-        self.assertTrue(self.installer.is_product_installed("collective.tiles.carousel"))
+        self.assertTrue(
+            self.installer.is_product_installed("collective.tiles.carousel")
+        )
 
     def test_browserlayer(self):
         """Test that ICollectiveTilesCarouselLayer is registered."""
@@ -46,7 +48,9 @@ class TestUninstall(unittest.TestCase):
 
     def test_product_uninstalled(self):
         """Test if collective.tiles.carousel is cleanly uninstalled."""
-        self.assertFalse(self.installer.is_product_installed("collective.tiles.carousel"))
+        self.assertFalse(
+            self.installer.is_product_installed("collective.tiles.carousel")
+        )
 
     def test_browserlayer_removed(self):
         """Test that ICollectiveTilesCarouselLayer is removed."""
