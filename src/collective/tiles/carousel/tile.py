@@ -52,15 +52,15 @@ class ISliderTile(Schema):
     """A tile that shows a slider."""
 
     title = schema.TextLine(
-        title=_(u'label_title', default=u'Title'),
+        title=_("label_title", default="Title"),
         required=False,
-        missing_value=u'',
+        missing_value="",
     )
 
     description = schema.Text(
-        title=_(u'label_description', default=u'Summary'),
+        title=_("label_description", default="Summary"),
         required=False,
-        missing_value=u'',
+        missing_value="",
     )
 
     carousel_items = RelationList(
@@ -70,7 +70,7 @@ class ISliderTile(Schema):
         ),
         default=[],
         value_type=RelationChoice(
-            title=u"Carousel Items", vocabulary="plone.app.vocabularies.Catalog"
+            title="Carousel Items", vocabulary="plone.app.vocabularies.Catalog"
         ),
         required=False,
     )
@@ -99,20 +99,20 @@ class ISliderTile(Schema):
     )
 
     sort_on = schema.TextLine(
-        description=_(u"Sort on this index"),
+        description=_("Sort on this index"),
         required=False,
-        title=_(u"Sort on"),
+        title=_("Sort on"),
     )
 
     sort_reversed = schema.Bool(
-        description=_(u"Sort the results in reversed order"),
+        description=_("Sort the results in reversed order"),
         required=False,
-        title=_(u"Reversed order"),
+        title=_("Reversed order"),
     )
 
     limit = schema.Int(
-        title=_(u'Limit'),
-        description=_(u'Limit Search Results'),
+        title=_("Limit"),
+        description=_("Limit Search Results"),
         required=False,
         default=12,
         min=1,
@@ -200,16 +200,14 @@ class ISliderTile(Schema):
     )
 
     slide_template = schema.Choice(
-        title=_(u"Display mode"),
-        source=_(u"Available Slider Views"),
+        title=_("Display mode"),
+        source=_("Available Slider Views"),
         default="slide_view",
         required=True,
     )
 
     items_per_slide = schema.Choice(
-        title=_(u"Items per Slide"),
-        default=1,
-        values=(1, 2, 3, 4, 5, 6, 7, 8)
+        title=_("Items per Slide"), default=1, values=(1, 2, 3, 4, 5, 6, 7, 8)
     )
 
 
@@ -320,8 +318,11 @@ class SliderTile(Tile):
         result = []
         for obj in items.keys():
             result.append(obj)
-        ips = self.data.get('items_per_slide', 1)
-        slides = [result[i:i+ips] for i in [x*ips for x in range(0, int(len(result)/ips)+int(1))]]
+        ips = self.data.get("items_per_slide", 1)
+        slides = [
+            result[i : i + ips]
+            for i in [x * ips for x in range(0, int(len(result) / ips) + int(1))]
+        ]
         return [x for x in slides if x]
 
     def item_view(self, item, data):
@@ -408,8 +409,8 @@ def availableSliderViewsVocabulary(context):
     listing_views = registry.get("collective.tiles.carousel.slide_views", {})
     if len(listing_views) == 0:
         listing_views = {
-            "slide_view": u"Slider view",
-            "slide_full_view": u"Full view",
+            "slide_view": "Slider view",
+            "slide_full_view": "Full view",
         }
     voc = []
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):

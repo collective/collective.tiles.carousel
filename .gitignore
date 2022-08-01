@@ -30,3 +30,9 @@ report.html
 .tox/
 reports/
 # excludes
+
+# mxdev
+.make-sentinels/
+sources/
+/*-mxdev.txt
+.installed.txt
