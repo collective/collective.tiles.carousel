@@ -2,26 +2,12 @@
    If you want to learn more about writing documentation, please check out: http://docs.plone.org/about/documentation_styleguide.html
    This text does not appear on pypi or github. It is a comment.
 
-.. image:: https://travis-ci.org/collective/collective.tiles.carousel.svg?branch=master
-    :target: https://travis-ci.org/collective/collective.tiles.carousel
-
-.. image:: https://coveralls.io/repos/github/collective/collective.tiles.carousel/badge.svg?branch=master
-    :target: https://coveralls.io/github/collective/collective.tiles.carousel?branch=master
-    :alt: Coveralls
+.. image:: https://github.com/collective/collective.tiles.carousel/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/collective/collective.tiles.carousel.git
 
 .. image:: https://img.shields.io/pypi/v/collective.tiles.carousel.svg
     :target: https://pypi.python.org/pypi/collective.tiles.carousel/
     :alt: Latest Version
-
-.. image:: https://img.shields.io/pypi/status/collective.tiles.carousel.svg
-    :target: https://pypi.python.org/pypi/collective.tiles.carousel
-    :alt: Egg Status
-
-.. image:: https://img.shields.io/pypi/pyversions/collective.tiles.carousel.svg?style=plastic   :alt: Supported - Python Versions
-
-.. image:: https://img.shields.io/pypi/l/collective.tiles.carousel.svg
-    :target: https://pypi.python.org/pypi/collective.tiles.carousel/
-    :alt: License
 
 
 ================================
