@@ -18,11 +18,10 @@ class CollectiveTilesCarouselLayer(PloneSandboxLayer):
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
         import plone.app.dexterity
+        import plone.app.mosaic
 
         self.loadZCML(package=plone.app.dexterity)
-        import plone.restapi
-
-        self.loadZCML(package=plone.restapi)
+        self.loadZCML(package=plone.app.mosaic)
         self.loadZCML(package=collective.tiles.carousel)
 
     def setUpPloneSite(self, portal):

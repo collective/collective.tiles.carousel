@@ -26,6 +26,8 @@ setup(
         "Framework :: Plone :: 6.0",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
     ],
@@ -45,26 +47,21 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
-    python_requires="==3.8",
+    python_requires=">=3.7",
     install_requires=[
         "setuptools",
         # -*- Extra requirements: -*-
         "z3c.jbot",
         "Products.CMFPlone",
-        "plone.restapi",
+        "plone.app.mosaic",
         "plone.app.tiles",
         "plone.tiles",
     ],
     extras_require={
-        "mosaic": [
-            "plone.app.mosaic",
-        ],
         "test": [
             "plone.app.testing",
             "plone.testing",
             "plone.app.robotframework[debug]",
-            "robotframework-selenium2screenshots",
-            "plone.app.mosaic",
         ],
     },
     entry_points="""
