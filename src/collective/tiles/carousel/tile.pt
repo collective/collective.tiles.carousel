@@ -17,9 +17,9 @@
     ">
 
     <div class="tileHeader" tal:condition="python:view.data['title'] or view.data['description']">
-      <h2 class="" tal:content="python:view.data['title']"
+      <h2 class="" tal:condition="python:view.data['title']"
        tal:content="python:view.data['title']">Title</h2>
-      <div class="tileDescription lead" tal:content="python:view.data['description']"
+      <div class="tileDescription lead" tal:condition="python:view.data['description']"
        tal:content="python:view.data['description']">Description</div>
     </div>
 
