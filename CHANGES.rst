@@ -5,7 +5,8 @@ Changelog
 1.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update indicators markup to Bootstrap 5.x
+  [petschki]
 
 
 1.0.1 (2022-08-02)

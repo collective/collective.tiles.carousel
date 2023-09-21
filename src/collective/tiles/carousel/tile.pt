@@ -25,12 +25,11 @@
 
     <div id="carousel-${view/id}" class="carousel ${darkvariant} slide ${crossfade} mb-3 collective-tiles-carousel" data-bs-ride="carousel" data-bs-interval="${python:view.data.get('carousel_speed', False) or 'false'}">
 
-      <ol class="carousel-indicators" tal:condition="view/data/indicators">
+      <div class="carousel-indicators" tal:condition="view/data/indicators">
         <tal:indicators repeat="item items">
-          <li data-bs-target="#carousel-${view/id}" data-bs-slide-to="${python:repeat.item.index}"
-            class="${python:repeat.item.index == 0 and 'active' or None}"></li>
+          <button type="button" data-bs-target="#carousel-${view/id}" data-bs-slide-to="${python:repeat.item.index}" class="${python:repeat.item.index == 0 and 'active' or None}" aria-current="true" aria-label="Slide ${python:repeat.item.index}"></button>
         </tal:indicators>
-      </ol>
+      </div>
 
       <div class="carousel-inner">
         <tal:slides repeat="slide items">
