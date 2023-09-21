@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0.2 (unreleased)
+1.0.2 (2023-09-21)
 ------------------
 
 - Update indicators markup to Bootstrap 5.x
