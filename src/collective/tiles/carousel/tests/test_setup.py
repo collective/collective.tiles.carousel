@@ -35,7 +35,6 @@ class TestSetup(unittest.TestCase):
 
 
 class TestUninstall(unittest.TestCase):
-
     layer = COLLECTIVE_TILES_CAROUSEL_INTEGRATION_TESTING
 
     def setUp(self):
