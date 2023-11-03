@@ -26,7 +26,7 @@ class SlideView(BrowserView):
         scale_util = api.content.get_view("images", obj, self.request)
         return scale_util.tag(
             fieldname="image",
-            mode=data.get("crop") and "cover" or "keep",
+            mode="contain" if data.get("crop") else "scale",
             scale=(
                 data.get("image_scale")
                 if data.get("image_scale", "") != "original"
