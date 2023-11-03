@@ -124,7 +124,7 @@ class ISliderTile(Schema):
         default="large",
     )
 
-    crop = schema.Bool(title=_("Crop Images"), required=False, default=True)
+    crop = schema.Bool(title=_("Crop Images"), required=False, default=False)
 
     image_class = schema.TextLine(
         title=_("Image Class"),
