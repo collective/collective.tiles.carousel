@@ -10,7 +10,6 @@ import collective.tiles.carousel
 
 
 class CollectiveTilesCarouselLayer(PloneSandboxLayer):
-
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):

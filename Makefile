@@ -78,17 +78,6 @@ help: ## This help message
 	@echo "${WARN_COLOR}Targets:${NO_COLOR}"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-##############################################################################
-# targets and prerequisites
-# target has to be one file, otherwise step gets executes for each file separate
-PREPARE_PREREQUISITES=${PIP_REQUIREMENTS_IN_FILE} ${CONSTRAINTS} mx.ini ${ADDONBASE}setup.cfg
-PREPARE_TARGET=requirements-mxdev.txt
-INSTALL_PREREQUSISTES=${PREPARE_TARGET}
-INSTALL_TARGET=.installed.txt
-INSTANCE_PREREQUISITES=${INSTALL_TARGET} ${INSTANCE_YAML}
-INSTANCE_TARGET=${INSTANCE_FOLDER}/etc/zope.ini ${INSTANCE_FOLDER}/etc/zope.conf ${INSTANCE_FOLDER}/etc/site.zcml
-TEST_PREREQUISITES=${INSTALL_TARGET}
-RUN_PREREQUISITES=${INSTANCE_TARGET}
 
 ##############################################################################
 # BASE
@@ -122,7 +111,7 @@ ifeq (, $(shell which $(PYTHON) ))
 endif
 
 # version ok?
-PYTHON_VERSION_MIN=3.7
+PYTHON_VERSION_MIN=3.8
 PYTHON_VERSION_OK=$(shell $(PYTHON) -c 'import sys; print(int(sys.version_info[0:2] >= tuple(map(int, "$(PYTHON_VERSION_MIN)".split(".")))))' )
 
 ifeq ($(PYTHON_VERSION_OK),0)

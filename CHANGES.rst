@@ -5,7 +5,8 @@ Changelog
 1.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix carousel speed "0" to stop autoplay.
+  [petschki]
 
 
 1.0.2 (2023-09-21)
