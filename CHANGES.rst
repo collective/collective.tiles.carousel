@@ -8,6 +8,12 @@ Changelog
 - Fix carousel speed "0" to stop autoplay.
   [petschki]
 
+- Fix image cropping when activated.
+  [petschki]
+
+- configure with `plone/meta`.
+  [petschki]
+
 
 1.0.2 (2023-09-21)
 ------------------
