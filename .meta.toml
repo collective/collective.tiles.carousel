@@ -4,3 +4,18 @@
 [meta]
 template = "default"
 commit-id = "fe7a1752"
+
+[github]
+jobs = [
+    "qa",
+    "test",
+    "coverage",
+    "dependencies",
+    "release_ready",
+    ]
+
+[gitignore]
+extra_lines = """
+# ignore pipforest check
+forest.*
+"""
