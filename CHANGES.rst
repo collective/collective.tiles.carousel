@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0.3 (unreleased)
+1.0.3 (2023-11-03)
 ------------------
 
 - Fix carousel speed "0" to stop autoplay.
