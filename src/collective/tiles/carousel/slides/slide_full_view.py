@@ -1,5 +1,3 @@
-from collective.tiles.carousel import _
-from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL_SCHEMES
 from Products.Five import BrowserView
 
 

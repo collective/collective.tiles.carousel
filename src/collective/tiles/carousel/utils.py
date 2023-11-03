@@ -3,8 +3,6 @@
 from plone import api
 from plone.app.querystring import queryparser
 from plone.app.querystring.interfaces import IParsedQueryIndexModifier
-from plone.app.uuid.utils import uuidToObject
-from Products.ZCatalog.interfaces import ICatalogBrain
 from zope.component import getUtilitiesFor
 
 
@@ -36,26 +34,3 @@ def parse_query_from_data(data, context=None):
     if data.get("sort_reversed", False):
         parsed["sort_order"] = "reverse"
     return parsed
-
-
-def get_object(val):
-    """Return the real object."""
-    if ICatalogBrain.providedBy(val):
-        return val.getObject()
-
-    if not val:
-        return None
-
-    if isinstance(val, basestring):
-        if val[0] == "/":
-            # it's a path
-            site = api.portal.get()
-            return site.restrictedTraverse(val.strip("/"), None)
-        else:
-            # try querying catalog
-            obj = uuidToObject(val)
-            if obj:
-                return obj
-    if isinstance(val, basestring):
-        return None
-    return val
