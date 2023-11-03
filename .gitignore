@@ -48,6 +48,10 @@ var/
 # ignore pipforest check
 forest.*
 
+# ignore testfiles
+test_*
+robot_*
+
 ##
 # Add extra configuration options in .meta.toml:
 #  [gitignore]
