@@ -1,4 +1,3 @@
-from collective.tiles.carousel import _
 from plone import api
 from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL_SCHEMES
 from plone.app.contenttypes.utils import replace_link_variables_by_paths

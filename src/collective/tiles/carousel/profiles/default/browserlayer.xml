@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <layers>
-  <layer
-      name="collective.tiles.carousel"
-      interface="collective.tiles.carousel.interfaces.ICollectiveTilesCarouselLayer"
-      />
+  <layer interface="collective.tiles.carousel.interfaces.ICollectiveTilesCarouselLayer"
+         name="collective.tiles.carousel"
+  />
 </layers>

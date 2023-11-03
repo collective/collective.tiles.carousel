@@ -1,8 +1,6 @@
+exclude Makefile *.cfg *.in *.nix *.sh *.conf *.js *.json Procfile .jshintrc *-mxdev.txt .installed.txt instance.yaml pyproject.toml
 graft src/collective
 graft docs
 include *.rst
 global-exclude *.pyc
 include *.txt
-include *.yaml
-include Makefile
-include mx.ini
