@@ -9,8 +9,8 @@ from plone.app.contenttypes.interfaces import ICollection
 from plone.app.contenttypes.utils import replace_link_variables_by_paths
 from plone.app.querystring import queryparser
 from plone.app.querystring.interfaces import IParsedQueryIndexModifier
-from plone.app.z3cform.widget import QueryStringFieldWidget
-from plone.app.z3cform.widget import RelatedItemsFieldWidget
+from plone.app.z3cform.widgets.querystring import QueryStringFieldWidget
+from plone.app.z3cform.widgets.relateditems import RelatedItemsFieldWidget
 from plone.autoform import directives as form
 from plone.dexterity.interfaces import IDexterityContainer
 from plone.memoize import view

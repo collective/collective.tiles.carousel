@@ -7,12 +7,12 @@
 
   <!-- dynamic form -->
   <!-- <records prefix="plone.resources/collective.tiles.sliders.dynamicform"
-      interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+      interface='plone.base.interfaces.IResourceRegistry'>
     <value key="js">++plone++collective.tiles.sliders.dynamicform/pattern.js</value>
   </records> -->
 
   <!-- <records prefix="plone.bundles/collective.tiles.sliders.dynamicform"
-      interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+      interface='plone.base.interfaces.IBundleRegistry'>
     <value key="resources">
       <element>collective.tiles.sliders.dynamicform</element>
     </value>

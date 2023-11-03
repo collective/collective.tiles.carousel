@@ -53,17 +53,29 @@ setup(
     install_requires=[
         "setuptools",
         # -*- Extra requirements: -*-
-        "z3c.jbot",
-        "Products.CMFPlone",
+        "Products.GenericSetup",
+        "plone.app.contenttypes",
+        "plone.app.querystring",
         "plone.app.mosaic",
         "plone.app.tiles",
+        "plone.app.z3cform",
+        "plone.autoform",
+        "plone.base",
+        "plone.dexterity",
+        "plone.memoize",
+        "plone.supermodel",
         "plone.tiles",
+        "plone.api",
+        "z3c.relationfield",
     ],
     extras_require={
         "test": [
+            "plone.app.dexterity",
             "plone.app.testing",
+            "plone.browserlayer",
             "plone.testing",
             "plone.app.robotframework[debug]",
+            "robotsuite",
         ],
     },
     entry_points="""
