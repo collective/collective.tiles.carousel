@@ -11,7 +11,9 @@ def parse_query_from_data(data, context=None):
     query = data.get("query", {}) or {}
     try:
         parsed = queryparser.parseAndModifyFormquery(
-            context, query, data.get("sort_on"),
+            context,
+            query,
+            data.get("sort_on"),
             "desc" if data.get("sort_reversed", False) else "asc",
         )
     except KeyError:

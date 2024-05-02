@@ -1,4 +1,5 @@
 """Setup tests for this package."""
+
 from collective.tiles.carousel.testing import (
     COLLECTIVE_TILES_CAROUSEL_INTEGRATION_TESTING,
 )

@@ -282,9 +282,7 @@ class SliderTile(Tile):
         query = self.query
         if query:
             items.update(
-                OrderedDict.fromkeys(
-                    [x.getObject() for x in self.catalog(**query)]
-                )
+                OrderedDict.fromkeys([x.getObject() for x in self.catalog(**query)])
             )
 
         result = []
