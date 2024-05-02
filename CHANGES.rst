@@ -5,7 +5,11 @@ Changelog
 1.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix ``limit``.
+  [petschki]
+
+- code cleanup.
+  [petschki]
 
 
 1.0.3 (2023-11-03)

@@ -7,8 +7,6 @@ from plone import api
 from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL_SCHEMES
 from plone.app.contenttypes.interfaces import ICollection
 from plone.app.contenttypes.utils import replace_link_variables_by_paths
-from plone.app.querystring import queryparser
-from plone.app.querystring.interfaces import IParsedQueryIndexModifier
 from plone.app.z3cform.widgets.querystring import QueryStringFieldWidget
 from plone.app.z3cform.widgets.relateditems import RelatedItemsFieldWidget
 from plone.autoform import directives as form
@@ -22,7 +20,6 @@ from z3c.relationfield.schema import RelationChoice
 from z3c.relationfield.schema import RelationList
 from zope import schema
 from zope.component import getMultiAdapter
-from zope.component import getUtilitiesFor
 from zope.component import getUtility
 from zope.interface import alsoProvides
 from zope.interface import implementer
@@ -248,37 +245,10 @@ class SliderTile(Tile):
             values.append(name)
         return values
 
-    def parse_query_from_data(data, context=None):
-        """Parse query from data dictionary"""
-        if context is None:
-            context = api.portal.get()
-        query = data.get("query", {}) or {}
-        try:
-            parsed = queryparser.parseFormquery(context, query)
-        except KeyError:
-            parsed = {}
-
-        index_modifiers = getUtilitiesFor(IParsedQueryIndexModifier)
-        for name, modifier in index_modifiers:
-            if name in parsed:
-                new_name, query = modifier(parsed[name])
-                parsed[name] = query
-                # if a new index name has been returned, we need to replace
-                # the native ones
-                if name != new_name:
-                    del parsed[name]
-                    parsed[new_name] = query
-
-        if data.get("sort_on"):
-            parsed["sort_on"] = data["sort_on"]
-        if data.get("sort_reversed", False):
-            parsed["sort_order"] = "reverse"
-        return parsed
-
     @property
     def items(self):
         items = OrderedDict()
-        if "carousel_items" in self.data:
+        if len(self.data.get("carousel_items") or []):
             for item in self.data["carousel_items"]:
                 if ICollection.providedBy(item.to_object):
                     items.update(
@@ -309,16 +279,19 @@ class SliderTile(Tile):
                 else:
                     items[item.to_object] = None
 
-        if getattr(self, "query", None):
+        query = self.query
+        if query:
             items.update(
-                OrderedDict.fromkeys(
-                    [x.getObject() for x in api.content.find(**self.query)]
-                )
+                OrderedDict.fromkeys([x.getObject() for x in self.catalog(**query)])
             )
+
         result = []
-        for obj in items.keys():
+        limit = self.data.get("limit") or 12
+        for count, obj in enumerate(items.keys(), 1):
             result.append(obj)
-        ips = self.data.get("items_per_slide", 1)
+            if count >= limit:
+                break
+        ips = self.data.get("items_per_slide", 1) or 1
         slides = [
             result[i : i + ips]
             for i in [x * ips for x in range(0, int(len(result) / ips) + int(1))]
