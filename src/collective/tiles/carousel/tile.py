@@ -8,7 +8,6 @@ from plone.app.contenttypes.browser.link_redirect_view import NON_RESOLVABLE_URL
 from plone.app.contenttypes.interfaces import ICollection
 from plone.app.contenttypes.utils import replace_link_variables_by_paths
 from plone.app.z3cform.widgets.querystring import QueryStringFieldWidget
-from plone.app.z3cform.widgets.relateditems import RelatedItemsFieldWidget
 from plone.autoform import directives as form
 from plone.dexterity.interfaces import IDexterityContainer
 from plone.memoize import view
@@ -28,6 +27,16 @@ from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+
+
+try:
+    from plone.app.z3cform.widgets.contentbrowser import (
+        ContentBrowserFieldWidget as CarouselItemsWidget,
+    )
+except ImportError:
+    from plone.app.z3cform.widgets.relateditems import (
+        RelatedItemsFieldWidget as CarouselItemsWidget,
+    )
 
 
 @provider(IContextSourceBinder)
@@ -74,11 +83,12 @@ class ISliderTile(Schema):
 
     form.widget(
         "carousel_items",
-        RelatedItemsFieldWidget,
+        CarouselItemsWidget,
         vocabulary="plone.app.vocabularies.Catalog",
         pattern_options={
             "orderable": True,
             "recentlyUsed": True,
+            "upload": True,
         },
     )
 
