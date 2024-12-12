@@ -15,7 +15,7 @@ long_description = "\n\n".join(
 
 setup(
     name="collective.tiles.carousel",
-    version="1.1.0",
+    version="1.1.1.dev0",
     description="Slider for plone.app.mosaic based on Bootstrap 5",
     long_description=long_description,
     # Get more from https://pypi.org/classifiers/
