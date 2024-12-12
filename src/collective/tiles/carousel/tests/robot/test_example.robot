@@ -23,13 +23,12 @@
 
 *** Settings *****************************************************************
 
-Resource  plone/app/robotframework/selenium.robot
-Resource  plone/app/robotframework/keywords.robot
+Resource  plone/app/robotframework/browser.robot
 
 Library  Remote  ${PLONE_URL}/RobotRemote
 
-Test Setup  Open test browser
-Test Teardown  Close all browsers
+Test Setup  Run keywords  Plone Test Setup
+Test Teardown  Run keywords  Plone Test Teardown
 
 
 *** Test Cases ***************************************************************
@@ -47,20 +46,19 @@ Scenario: As a member I want to be able to log into the website
 
 a login form
   Go To  ${PLONE_URL}/login_form
-  Wait until page contains  Login Name
-  Wait until page contains  Password
+  Get Text    //body    contains    Login Name
+  Get Text    //body    contains    Password
 
 
 # --- WHEN -------------------------------------------------------------------
 
 I enter valid credentials
-  Input Text  __ac_name  admin
-  Input Text  __ac_password  secret
-  Click Button  Log in
+  Type Text    //input[@name="__ac_name"]    admin
+  Type Text    //input[@name="__ac_password"]    secret
+  Click    //button[contains(text(), "Log in")]
 
 
 # --- THEN -------------------------------------------------------------------
 
 I am logged in
-  Wait until page contains  You are now logged in
-  Page should contain  You are now logged in
+  Get Text    //body    contains    You are now logged in
