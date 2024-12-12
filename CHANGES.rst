@@ -2,10 +2,11 @@ Changelog
 =========
 
 
-1.0.5 (unreleased)
+1.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use new `ContentBrowserWidget` for Plone 6.1.
+  [petschki]
 
 
 1.0.4 (2024-05-02)
