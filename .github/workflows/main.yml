@@ -14,13 +14,13 @@ jobs:
           - "3.10"
           - "3.12"
         plone:
-          - "6.0-dev"
-          - "6.1-dev"
+          - "6.0-latest"
+          - "6.1-latest"
         exclude:
           - python: "3.8"
-            plone: "6.1-dev"
+            plone: "6.1-latest"
           - python: "3.12"
-            plone: "6.0-dev"
+            plone: "6.0-latest"
 
     steps:
       - uses: actions/checkout@v4.2.2
