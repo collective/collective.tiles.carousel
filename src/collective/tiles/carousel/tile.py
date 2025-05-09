@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from collective.tiles.carousel import _
 from collective.tiles.carousel.interfaces import ICollectiveTilesCarouselLayer
 from collective.tiles.carousel.utils import parse_query_from_data
@@ -257,50 +256,37 @@ class SliderTile(Tile):
 
     @property
     def items(self):
-        items = OrderedDict()
+        result = []
+
         if len(self.data.get("carousel_items") or []):
             for item in self.data["carousel_items"]:
                 if ICollection.providedBy(item.to_object):
-                    items.update(
-                        OrderedDict.fromkeys(
-                            [
-                                x.getObject()
-                                for x in item.to_object.results(
-                                    brains=True, batch=False
-                                )
-                            ]
+                    result += [
+                        x.getObject()
+                        for x in item.to_object.results(brains=True, batch=False)
+                    ]
+                elif IDexterityContainer.providedBy(item.to_object):
+                    result += [
+                        x.getObject()
+                        for x in api.content.find(
+                            path="/".join(item.to_object.getPhysicalPath()),
+                            sort_on="getObjPositionInParent",
+                            depth=1,
                         )
-                    )
-                    continue
-                if IDexterityContainer.providedBy(item.to_object):
-                    items.update(
-                        OrderedDict.fromkeys(
-                            [
-                                x.getObject()
-                                for x in api.content.find(
-                                    path="/".join(item.to_object.getPhysicalPath()),
-                                    sort_on="getObjPositionInParent",
-                                    depth=1,
-                                )
-                            ]
-                        )
-                    )
-                    continue
+                    ]
                 else:
-                    items[item.to_object] = None
+                    result.append(item.to_object)
 
         query = self.query
-        if query:
-            items.update(
-                OrderedDict.fromkeys([x.getObject() for x in self.catalog(**query)])
-            )
-
-        result = []
         limit = self.data.get("limit") or 12
-        for count, obj in enumerate(items.keys(), 1):
-            result.append(obj)
-            if count >= limit:
-                break
+
+        if query:
+            # limit catalog query to our limit
+            query["sort_limit"] = limit
+            result += [x.getObject() for x in self.catalog(**query)]
+
+        # limit result
+        result = result[:limit]
         ips = self.data.get("items_per_slide", 1) or 1
         slides = [
             result[i : i + ips]

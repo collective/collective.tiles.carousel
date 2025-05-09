@@ -5,7 +5,11 @@ Changelog
 1.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Show indicators and controls only if there are more than one slide.
+  [petschki]
+
+- Improve result calculation.
+  [petschki]
 
 
 1.1.0 (2024-12-12)

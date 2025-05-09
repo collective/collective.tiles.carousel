@@ -13,12 +13,11 @@
                  darkvariant python:view.data.get('darkvariant') and 'carousel-dark' or '';
                  crossfade python:view.data.get('crossfade') and 'carousel-fade' or '';
                  link_slides python:view.data.get('link_slides') != 'disabled';
-                 items_per_slide python:view.data.get('items_per_slide') and view.data.get('items_per_slide') or 1;
+                 items_per_slide python:view.data.get('items_per_slide', 1) or 1;
                  items_responsive python: items_per_slide > 1 and 'row-cols-2' or 'row-cols-1';
                  items_responsive python: items_per_slide == 3 and 'row-cols-1' or items_responsive;
                  autoplay_interval view/data/carousel_speed|nothing;
                ">
-
         <div class="tileHeader"
              tal:condition="python:view.data['title'] or view.data['description']"
         >
@@ -41,7 +40,7 @@
         >
 
           <div class="carousel-indicators"
-               tal:condition="view/data/indicators"
+               tal:condition="python:view.data.get('indicators')"
           >
             <tal:indicators repeat="item items">
               <button class="${python:repeat.item.index == 0 and 'active' or None}"
@@ -82,7 +81,7 @@
              href="#carousel-${view/id}"
              role="button"
              data-bs-slide="prev"
-             tal:condition="view/data/controls"
+             tal:condition="python:view.data.get('controls') and len(items) > 1"
           >
             <span class="carousel-control-prev-icon"
                   aria-hidden="true"
@@ -95,7 +94,7 @@
              href="#carousel-${view/id}"
              role="button"
              data-bs-slide="next"
-             tal:condition="view/data/controls"
+             tal:condition="python:view.data.get('controls') and len(items) > 1"
           >
             <span class="carousel-control-next-icon"
                   aria-hidden="true"
