@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.1.1 (unreleased)
+1.1.1 (2025-05-09)
 ------------------
 
 - Show indicators and controls only if there are more than one slide.
