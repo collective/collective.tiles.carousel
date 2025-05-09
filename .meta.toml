@@ -14,3 +14,11 @@ forest.*
 test_*
 robot_*
 """
+
+[github]
+jobs = [
+   "qa",
+   "coverage",
+   "release_ready",
+   "circular",
+]
