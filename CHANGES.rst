@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.1.2 (unreleased)
+1.1.2 (2025-07-17)
 ------------------
 
 - Fix "sort_on" values in query. @petschki
