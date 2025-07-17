@@ -5,7 +5,7 @@ Changelog
 1.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix "sort_on" values in query. @petschki
 
 
 1.1.1 (2025-05-09)

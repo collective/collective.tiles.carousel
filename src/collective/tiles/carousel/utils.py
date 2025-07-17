@@ -14,7 +14,7 @@ def parse_query_from_data(data, context=None):
             context,
             query,
             data.get("sort_on"),
-            "desc" if data.get("sort_reversed", False) else "asc",
+            "reverse" if data.get("sort_reversed", False) else "ascending",
         )
     except KeyError:
         parsed = {}
