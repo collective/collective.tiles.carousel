@@ -15,7 +15,7 @@ long_description = "\n\n".join(
 
 setup(
     name="collective.tiles.carousel",
-    version="1.1.3.dev0",
+    version="2.0.0.dev0",
     description="Slider for plone.app.mosaic based on Bootstrap 5",
     long_description=long_description,
     # Get more from https://pypi.org/classifiers/
@@ -25,11 +25,15 @@ setup(
         "Framework :: Plone",
         "Framework :: Plone :: Addon",
         "Framework :: Plone :: 6.0",
+        "Framework :: Plone :: 6.1",
+        "Framework :: Plone :: 6.2",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
     ],
@@ -49,7 +53,7 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     install_requires=[
         "setuptools",
         # -*- Extra requirements: -*-
