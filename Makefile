@@ -140,7 +140,7 @@ ${PIP_SENTINEL}: ${VENV_SENTINEL} ${CONSTRAINTS} ${SENTINEL}
 MXDEV_SENTINEL=${SENTINELFOLDER}pip-mxdev.sentinel
 ${MXDEV_SENTINEL}: ${PIP_SENTINEL}
 	@echo "$(OK_COLOR)Install mxdev$(NO_COLOR)"
-	@${PYBIN}pip install "mxdev==2.1.0" "libvcs==0.11.1"
+	@${PYBIN}pip install "mxdev==5.4.1"
 	@touch ${MXDEV_SENTINEL}
 
 .PHONY: prepare
