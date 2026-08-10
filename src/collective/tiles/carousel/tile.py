@@ -27,7 +27,6 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
-
 try:
     from plone.app.z3cform.widgets.contentbrowser import (
         ContentBrowserFieldWidget as CarouselItemsWidget,

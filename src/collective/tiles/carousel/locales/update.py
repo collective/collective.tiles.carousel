@@ -2,7 +2,6 @@ import os
 import pkg_resources
 import subprocess
 
-
 domain = "collective.tiles.carousel"
 os.chdir(pkg_resources.resource_filename(domain, ""))
 os.chdir("../../../")
