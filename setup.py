@@ -70,6 +70,7 @@ setup(
         "plone.tiles",
         "plone.api",
         "z3c.relationfield",
+        "Zope",
     ],
     extras_require={
         "test": [
