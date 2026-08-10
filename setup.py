@@ -1,6 +1,5 @@
 """Installer for the collective.tiles.carousel package."""
 
-from setuptools import find_packages
 from setuptools import setup
 
 long_description = "\n\n".join(
@@ -47,14 +46,10 @@ setup(
         # 'Documentation': 'https://collective.tiles.carousel.readthedocs.io/en/latest/',
     },
     license="GPL version 2",
-    packages=find_packages("src", exclude=["ez_setup"]),
-    namespace_packages=["collective", "collective.tiles"],
-    package_dir={"": "src"},
     include_package_data=True,
     zip_safe=False,
     python_requires=">=3.9",
     install_requires=[
-        "setuptools",
         # -*- Extra requirements: -*-
         "Products.GenericSetup",
         "plone.app.contenttypes",
