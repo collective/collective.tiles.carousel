@@ -1,3 +1,20 @@
+2.0.0 (2026-08-12)
+------------------
+
+Breaking changes:
+
+
+- Replace ``pkg_resources`` namespace with PEP 420 native namespace. (#3928)
+- Drop support for Python 3.8.  [maurits]
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs]
+
+
 Changelog
 =========
 
